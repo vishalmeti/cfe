@@ -47,9 +47,15 @@ export function NavUser({
     localStorage.removeItem("token")
 
     // redirect to login
-    
+    window.location.href = "/login"
+
   }
-  
+
+  const handleProfileClick = () => {
+    // redirect to profile
+    window.location.href = "/profile"
+  }
+
   return (
     (<SidebarMenu>
       <SidebarMenuItem>
@@ -58,11 +64,11 @@ export function NavUser({
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+              <Avatar className="h-10 w-10 rounded-lg overflow-hidden object-cover">
+                <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
                 <AvatarFallback className="rounded-lg">{getFirstLetter(user)}</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid flex-1 text-left text-sm leading-tight ml-2">
                 <span className="truncate font-medium">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
               </div>
@@ -75,9 +81,9 @@ export function NavUser({
             align="end"
             sideOffset={4}>
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+              <div className="flex items-center gap-3 px-2 py-2 text-left text-sm">
+                <Avatar className="h-10 w-10 rounded-lg overflow-hidden">
+                  <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
                   <AvatarFallback className="rounded-lg">{getFirstLetter(user)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -95,7 +101,7 @@ export function NavUser({
             </DropdownMenuGroup> */}
             {/* <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleProfileClick} >
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
