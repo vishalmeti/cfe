@@ -34,7 +34,7 @@ export default function Layout({ children }) {
                               </BreadcrumbItem> 
                               <BreadcrumbSeparator className="hidden md:block" /> */}
                               <BreadcrumbItem>
-                                  <BreadcrumbPage> Dashboard</BreadcrumbPage>
+                                  <BreadcrumbPage className='text-primary' > Dashboard</BreadcrumbPage>
                               </BreadcrumbItem>
                           </BreadcrumbList>
                       </Breadcrumb>

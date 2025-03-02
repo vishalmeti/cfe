@@ -437,30 +437,30 @@ const UserProfilePage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-4">
-                    <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="bg-muted p-4 rounded-lg dark:bg-muted">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <Key className="h-4 w-4 mr-2 text-gray-500" />
+                          <Key className="h-4 w-4 mr-2 text-muted-foreground" />
                           <Label className="text-sm font-medium">Custom ID</Label>
                         </div>
-                        <span className="text-sm font-mono bg-gray-100 py-1 px-2 rounded">{userData.custom_id}</span>
+                        <span className="text-sm font-mono bg-muted/70 py-1 px-2 rounded">{userData.custom_id}</span>
                       </div>
                     </div>
-                    
-                    <div className="bg-gray-50 p-4 rounded-lg">
+
+                    <div className="bg-muted p-4 rounded-lg dark:bg-muted">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+                          <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
                           <Label className="text-sm font-medium">Date Joined</Label>
                         </div>
                         <span className="text-sm">{formatDate(userData.date_joined)}</span>
                       </div>
                     </div>
-                    
-                    <div className="bg-gray-50 p-4 rounded-lg">
+
+                    <div className="bg-muted p-4 rounded-lg dark:bg-muted">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <User className="h-4 w-4 mr-2 text-gray-500" />
+                          <User className="h-4 w-4 mr-2 text-muted-foreground" />
                           <Label className="text-sm font-medium">Last Login</Label>
                         </div>
                         <span className="text-sm">{formatDate(userData.last_login)}</span>
