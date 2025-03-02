@@ -10,11 +10,11 @@ class UserService {
   }
 
   static getCurrentUser() {
-    return ApiService.get('/users/me');
+    return ApiService.get('/api/me/');
   }
 
-  static updateProfile(userData) {
-    return ApiService.put('/users/profile', userData);
+  static updateProfileImage(userData) {
+    return ApiService.post('api/v1/users/profile/', userData , {headers: {'Content-Type': 'multipart/form-data'}});
   }
 
   static getUsers(params) {
