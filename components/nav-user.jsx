@@ -6,6 +6,8 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
+  Moon,
+  Sun,
   Sparkles,
 } from "lucide-react"
 
@@ -29,6 +31,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useTheme } from "@/components/theme-provider"
 
 
 
@@ -36,6 +39,7 @@ export function NavUser({
   user
 }) {
   const { isMobile } = useSidebar()
+  const { theme, setTheme } = useTheme()
 
   const getFirstLetter = (user) => {
     return user?.name?.charAt(0).toUpperCase()
@@ -54,6 +58,10 @@ export function NavUser({
   const handleProfileClick = () => {
     // redirect to profile
     window.location.href = "/profile"
+  }
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark")
   }
 
   return (
@@ -112,6 +120,10 @@ export function NavUser({
               <DropdownMenuItem>
                 <Bell />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={toggleTheme}>
+                {theme === "dark" ? <Sun /> : <Moon />}
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
