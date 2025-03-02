@@ -1,0 +1,7 @@
+Steps to create the project and add shadcn to it
+
+1. npx create-next-app@latest my-nextjs-app
+2. cd into project
+3. npx shadcn@latest init
+4. copy and paste the tailwind.config.js file from other project to here
+5. add the tailwind.config.js to config section in component.json file
