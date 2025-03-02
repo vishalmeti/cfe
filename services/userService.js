@@ -2,7 +2,7 @@ import ApiService from '@/lib/api';
 
 class UserService {
   static login(credentials) {
-    return ApiService.post('/auth/login', credentials);
+    return ApiService.post('/api/token/', credentials);
   }
 
   static register(userData) {

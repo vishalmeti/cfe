@@ -1,14 +1,91 @@
+'use client'
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { constants } from "@/constants"
+import { useState, useEffect } from "react"
+import toast from "react-hot-toast"
+import UserService from "@/services/userService"
+import { useRouter } from "next/navigation"
 
 export function LoginForm({
   className,
   ...props
 }) {
   const APP_NAME = constants.APP_NAME
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+
+
+  useEffect(() => {
+    setEmail('');
+    setPassword('');
+    setError('');
+    setLoading(false);
+    const token = localStorage.getItem('token');
+    if (token
+      && token !== 'undefined'
+      && token !== 'null') {
+      router.push('/dashboard');
+    }
+
+  }, []);
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value)
+  }
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const loginPromise = UserService.login({
+        username: email, password
+      });
+
+      const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(new Error('Request timed out'))
+        }, 5000)
+      }
+      );
+
+      const responsePromise = Promise.race([loginPromise, timeoutPromise]);
+
+      toast.promise(
+        responsePromise,
+        {
+          loading: "Logging in...",
+          success: "Logged in!",
+          error: "Invalid credentials / Request timed out",
+        }
+      );
+      const resp = await responsePromise;
+      // store the token in local storage
+      localStorage.setItem('token', resp.access);
+      // redirect to the dashboard
+      if (resp.access) {
+        router.push('/dashboard');
+      }
+
+      // window.location.href = '/dashboard';
+    } catch (error) {
+
+    }
+
+  };
+
   return (
     (<form className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col items-center gap-2 text-center">
@@ -20,7 +97,9 @@ export function LoginForm({
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com"  />
+          <Input id="email" type="email" placeholder="m@example.com"
+            onChange={handleEmailChange}
+          />
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
@@ -29,9 +108,9 @@ export function LoginForm({
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password"  />
+          <Input id="password" type="password" onChange={handlePasswordChange} />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" onClick={handleSubmit}>
           Login
         </Button>
         {/* <div
