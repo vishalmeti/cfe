@@ -110,7 +110,7 @@ export function LoginForm({
           </div>
           <Input id="password" type="password" onChange={handlePasswordChange} />
         </div>
-        <Button type="submit" className="w-full" onClick={handleSubmit}>
+        <Button type="submit" className="w-full bg-primary/70 hover:bg-primary/70 cursor-pointer" onClick={handleSubmit}>
           Login
         </Button>
         {/* <div

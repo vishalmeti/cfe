@@ -59,7 +59,7 @@ export function RegisterForm({
                 required
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-primary/70 hover:bg-primary/70 cursor-pointer">
               Register
             </Button>
           </div>
