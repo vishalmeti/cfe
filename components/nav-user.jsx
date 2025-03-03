@@ -71,7 +71,7 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+              className="data-[state=open]:bg-primary/15 data-[state=open]:text-primary transition-colors duration-200">
               <Avatar className="h-10 w-10 rounded-lg overflow-hidden object-cover">
                 <AvatarImage src={user.avatar} alt={user.name} className="object-cover" />
                 <AvatarFallback className="rounded-lg">{getFirstLetter(user)}</AvatarFallback>
@@ -109,7 +109,9 @@ export function NavUser({
             </DropdownMenuGroup> */}
             {/* <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={handleProfileClick} >
+              <DropdownMenuItem
+                onClick={handleProfileClick}
+                className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary transition-colors duration-200">
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
@@ -117,17 +119,22 @@ export function NavUser({
                 <CreditCard />
                 Billing
               </DropdownMenuItem> */}
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary transition-colors duration-200">
                 <Bell />
                 Notifications
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={toggleTheme}>
+              <DropdownMenuItem
+                onClick={toggleTheme}
+                className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary transition-colors duration-200">
                 {theme === "dark" ? <Sun /> : <Moon />}
                 {theme === "dark" ? "Light Mode" : "Dark Mode"}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem  onClick={handleLogout}>
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary transition-colors duration-200">
               <LogOut />
               Log out
             </DropdownMenuItem>

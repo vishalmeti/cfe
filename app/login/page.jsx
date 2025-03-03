@@ -26,7 +26,7 @@ export default function LoginPage() {
         <img
           src="/login_img2.png"
           alt="Image"
-          className="absolute inset-0 h-full w-full object-fit dark:brightness-[0.2] dark:grayscale" />
+          className="absolute inset-0 h-full w-full object-fit dark:brightness-[0.8] " />
       </div>
     </div>)
   );
