@@ -101,7 +101,7 @@ let data = {
       items: [
         {
           title: "Kevin",
-          url: "#",
+          url: "/chat/1",
         },
         {
           title: "Jenny",
