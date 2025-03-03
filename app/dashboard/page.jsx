@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
     Card,
     CardContent,
@@ -32,6 +33,7 @@ import {
 } from "lucide-react"
 
 const DashboardPage = () => {
+    const router = useRouter()
     const [isAdmin, setIsAdmin] = useState(false)
 
     // Mock data
@@ -145,6 +147,11 @@ const DashboardPage = () => {
     // Function to get height percentage based on value
     const getHeightPercentage = (value) => {
         return (value / maxComplaintCount) * 100;
+    }
+
+    const routeToComplaints = () => {
+        // Navigate to complaints page
+        router.push("/complaints")
     }
 
     return (
@@ -290,7 +297,7 @@ const DashboardPage = () => {
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button variant="outline" size="sm" className="w-full">
+                                <Button variant="outline" size="sm" className="w-full" onClick={routeToComplaints} >
                                     View All Complaints
                                 </Button>
                             </CardFooter>
