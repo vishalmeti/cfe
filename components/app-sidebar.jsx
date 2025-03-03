@@ -32,87 +32,87 @@ import { useState, useEffect } from "react"
 
 // This is sample data.
 let data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+  // user: {
+  //   name: "shadcn",
+  //   email: "m@example.com",
+  //   avatar: "/avatars/shadcn.jpg",
+  // },
   teams: [
     {
       name: "Acme Inc",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+    // {
+    //   name: "Acme Corp.",
+    //   logo: AudioWaveform,
+    //   plan: "Startup",
+    // },
+    // {
+    //   name: "Evil Corp.",
+    //   logo: Command,
+    //   plan: "Free",
+    // },
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Dashboard",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Overview",
+          url: "/dashboard",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Announcements",
+          url: "/announcements",
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "Complaints",
+          url: "/complaints",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Channels",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
+          title: "#General",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "#Events",
           url: "#",
         },
-        {
-          title: "Quantum",
-          url: "#",
-        },
+        // {
+        //   title: "Quantum",
+        //   url: "#",
+        // },
       ],
     },
     {
-      title: "Documentation",
+      title: "Chat's",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
+          title: "Kevin",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "Jenny",
           url: "#",
         },
         {
-          title: "Tutorials",
+          title: "Tom",
           url: "#",
         },
         {
-          title: "Changelog",
+          title: "Sara",
           url: "#",
         },
       ],
@@ -187,7 +187,7 @@ export function AppSidebar({
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} popupData={0} />
