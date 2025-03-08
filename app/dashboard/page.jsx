@@ -154,6 +154,12 @@ const DashboardPage = () => {
         router.push("/complaints")
     }
 
+    const routeToNegighbors = () => {
+        // Navigate to neighbors page
+        alert("Navigating to neighbors page")
+        router.push("/chat/1")
+    }
+
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 md:p-6">
             <div className="flex items-center justify-between">
@@ -178,9 +184,9 @@ const DashboardPage = () => {
             <Tabs defaultValue="overview" className="space-y-4">
                 <TabsList className="grid w-full grid-cols-4 md:w-auto">
                     <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="building">Building</TabsTrigger>
                     <TabsTrigger value="complaints">Complaints</TabsTrigger>
                     <TabsTrigger value="neighbors">Neighbors</TabsTrigger>
+                    <TabsTrigger value="building">Building</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="overview" className="space-y-4">
@@ -349,7 +355,7 @@ const DashboardPage = () => {
                             <CardContent>
                                 <div className="space-y-4">
                                     {neighborData.map(neighbor => (
-                                        <div key={neighbor.id} className="flex items-center space-x-4">
+                                        <div key={neighbor.id} className=" cursor-pointer flex items-center space-x-4" >
                                             <Avatar>
                                                 <AvatarImage src={neighbor.avatar} />
                                                 <AvatarFallback>{neighbor.name.substring(0, 2)}</AvatarFallback>
