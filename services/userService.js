@@ -20,6 +20,9 @@ class UserService {
   static getUsers(params) {
     return ApiService.get('/users', params);
   }
+  static getRecipientConversation(recipient_id) {
+    return ApiService.get(`api/v1/chat/conversations/recipient/${recipient_id}`);
+  }
 }
 
 export default UserService;
