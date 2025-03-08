@@ -105,6 +105,7 @@ export default function ChatPage() {
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
       }
     }
+    console.log("Messages updated", messages);
   }, [messages]);
   
     // Search functionality
@@ -168,7 +169,7 @@ export default function ChatPage() {
     };
 
     const handleReply = (message, index) => {
-        setReplyTo({ message, index });
+      setReplyTo({ message, messageId: message.id, index });
         // Focus on input field
         document.getElementById('message-input').focus();
     };
@@ -182,12 +183,12 @@ export default function ChatPage() {
       sender: currentUser.id,
       text: inputMessage,
       timestamp: new Date().toISOString(),
-        replyTo: replyTo ? replyTo.index : null,
+      replyToId: replyTo ? replyTo.message.id : null,
     };
     
     setMessages([...messages, newMessage]);
     setInputMessage("");
-      setReplyTo(null);
+    setReplyTo(null);
     
     // In a real app, you'd send to API:
     // fetch('/api/messages', {
@@ -209,13 +210,17 @@ export default function ChatPage() {
     });
   };
 
-    const getReplyContent = (index) => {
-        if (index === null || index === undefined || !messages[index]) return null;
-        return messages[index];
+  const getReplyContent = (messageId) => {
+    if (!messageId) return null;
+    const replyMessage = messages.find(msg => msg.id === messageId);
+    return replyMessage || null;
     };
 
-    const scrollToMessage = (index) => {
-        const messageElement = document.getElementById(`message-${index}`);
+  const scrollToMessage = (messageId) => {
+    const messageIndex = messages.findIndex(msg => msg.id === messageId);
+    if (messageIndex === -1) return;
+
+    const messageElement = document.getElementById(`message-${messageIndex}`);
 
         if (messageElement && scrollAreaRef.current) {
             const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -332,7 +337,7 @@ export default function ChatPage() {
         <div className="flex flex-col gap-3 pb-4">
                   {messages.map((message, index) => {
             const isOwnMessage = message.sender === currentUser.id;
-                      const replyMessage = message.replyTo !== null ? getReplyContent(message.replyTo) : null;
+                    const replyMessage = message.replyToId ? getReplyContent(message.replyToId) : null;
             
             return (
               <div 
@@ -358,7 +363,7 @@ export default function ChatPage() {
                             <div
                                 className={`px-4 py-2 rounded-t-lg ${isOwnMessage ? 'bg-primary/20 ml-auto' : 'bg-muted/60'} 
                       text-xs mb-1 cursor-pointer flex items-center`}
-                                onClick={() => scrollToMessage(message.replyTo)}
+                      onClick={() => scrollToMessage(message.replyToId)}
                             >
                                 <Reply className="h-3 w-3 mr-1" />
                                 <div className="truncate">
