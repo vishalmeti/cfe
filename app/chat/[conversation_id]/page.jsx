@@ -1,5 +1,8 @@
 "use client";
 
+import { fetchMessages } from "@/store/chatStore/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,7 +20,7 @@ import {
 import { Card } from "@/components/ui/card";
 
 export default function ChatPage() {
-  const { utu_id } = useParams();
+  const { conversation_id } = useParams();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [chatUser, setChatUser] = useState(null);
@@ -28,7 +31,16 @@ export default function ChatPage() {
     const [searchResults, setSearchResults] = useState([]);
     const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
     const [replyTo, setReplyTo] = useState(null);
-  
+
+
+  // redux store
+  const dispatch = useDispatch();
+  const { messages_by_id, messages_by_convId, status, error } = useSelector((state) => state.chat);
+
+  useEffect(() => {
+    dispatch(fetchMessages(conversation_id));
+  }, [conversation_id]);
+
   // Fetch chat history and user data
   useEffect(() => {
     // Mock data - replace with actual API calls
@@ -39,7 +51,7 @@ export default function ChatPage() {
     };
     
     const mockChatUser = {
-      id: utu_id,
+      id: conversation_id,
       name: "John Doe",
       avatar: "/avatars/john.jpg",
       status: "online"
@@ -54,7 +66,7 @@ export default function ChatPage() {
       },
       {
         id: 2,
-        sender: utu_id,
+        sender: conversation_id,
         text: "I'm doing great! Just finished the project we were working on.",
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
@@ -66,7 +78,7 @@ export default function ChatPage() {
       },
       {
         id: 2,
-        sender: utu_id,
+        sender: conversation_id,
         text: "I'm doing great! Just finished the project we were working on.",
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
@@ -78,7 +90,7 @@ export default function ChatPage() {
       },
       {
         id: 2,
-        sender: utu_id,
+        sender: conversation_id,
         text: "I'm doing great! Just finished the project we were working on.",
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
@@ -90,7 +102,7 @@ export default function ChatPage() {
       },
       {
         id: 2,
-        sender: utu_id,
+        sender: conversation_id,
         text: "I'm doing great! Just finished the project we were working on.",
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
@@ -102,7 +114,7 @@ export default function ChatPage() {
       },
       {
         id: 2,
-        sender: utu_id,
+        sender: conversation_id,
         text: "I'm doing great! Just finished the project we were working on.",
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
@@ -114,7 +126,7 @@ export default function ChatPage() {
       },
       {
         id: 2,
-        sender: utu_id,
+        sender: conversation_id,
         text: "I'm doing great! Just finished the project we were working on.",
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
@@ -126,7 +138,7 @@ export default function ChatPage() {
       },
       {
         id: 2,
-        sender: utu_id,
+        sender: conversation_id,
         text: "I'm doing great! Just finished the project we were working on.",
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
@@ -144,7 +156,7 @@ export default function ChatPage() {
       },
       {
         id: 4,
-        sender: utu_id,
+        sender: conversation_id,
         text: "Sure, I'll send you the documentation in a bit.",
         timestamp: new Date(Date.now() - 3300000).toISOString(),
       },
@@ -158,8 +170,8 @@ export default function ChatPage() {
     // const fetchChatData = async () => {
     //   try {
     //     const [userResponse, messagesResponse] = await Promise.all([
-    //       fetch(`/api/users/${utu_id}`),
-    //       fetch(`/api/chats/${currentUserId}/${utu_id}/messages`)
+    //       fetch(`/api/users/${conversation_id}`),
+    //       fetch(`/api/chats/${currentUserId}/${conversation_id}/messages`)
     //     ]);
     //     const userData = await userResponse.json();
     //     const messagesData = await messagesResponse.json();
@@ -170,7 +182,7 @@ export default function ChatPage() {
     //   }
     // };
     // fetchChatData();
-  }, [utu_id]);
+  }, [conversation_id]);
   
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -270,7 +282,7 @@ export default function ChatPage() {
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify({
     //     sender: currentUser.id,
-    //     recipient: utu_id,
+    //     recipient: conversation_id,
       //     text: inputMessage,
       //     replyToMessageId: replyTo ? replyTo.message.id : null
     //   })

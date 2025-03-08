@@ -1,3 +1,4 @@
+'use client';
 
 import { AppSidebar } from "@/components/app-sidebar"
 import {
@@ -14,6 +15,9 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
+
+import { Provider } from "react-redux"
+import { store } from "@/store"
 
 import { Home } from 'lucide-react'
 
@@ -46,9 +50,11 @@ export default function Layout({ children }) {
                       </Breadcrumb>
                   </div>
               </header>
+              <Provider store={store}>
               <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                   {children}
               </div>
+              </Provider>
           </SidebarInset>
       </SidebarProvider>
   );
