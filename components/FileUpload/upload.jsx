@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import { Upload, X, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Upload, X, CheckCircle, AlertCircle, Loader2, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,7 +15,7 @@ const FileUploadComponent = () => {
   // Simulated upload states for each file
   const getInitialFileState = () => ({
     progress: 0,
-    status: 'idle', // idle, uploading, success, error
+    status: 'selected', // selected, uploading, success, error
     error: null
   });
 
@@ -37,19 +37,35 @@ const FileUploadComponent = () => {
   };
 
   const processFiles = (fileList) => {
-    const newFiles = Array.from(fileList).map(file => ({
-      file,
-      id: `${file.name}-${Date.now()}`,
-      ...getInitialFileState()
-    }));
+    const newFiles = Array.from(fileList).map(file => {
+      const fileData = {
+        file,
+        id: `${file.name}-${Date.now()}`,
+        ...getInitialFileState(),
+      };
+
+      // Add preview URL for image files
+      if (file.type.startsWith('image/')) {
+        fileData.previewUrl = URL.createObjectURL(file);
+      }
+
+      return fileData;
+    });
 
     setFiles(prev => [...prev, ...newFiles]);
-    
-    // Simulate uploading each file
-    newFiles.forEach(fileObj => {
-      simulateFileUpload(fileObj.id);
-    });
+    // Files are now just selected, not automatically uploaded
   };
+
+  // Clean up object URLs on unmount to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      files.forEach(fileObj => {
+        if (fileObj.previewUrl) {
+          URL.revokeObjectURL(fileObj.previewUrl);
+        }
+      });
+    };
+  }, [files]);
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -72,6 +88,11 @@ const FileUploadComponent = () => {
   };
 
   const removeFile = (id) => {
+    // Release the object URL before removing the file
+    const fileToRemove = files.find(file => file.id === id);
+    if (fileToRemove?.previewUrl) {
+      URL.revokeObjectURL(fileToRemove.previewUrl);
+    }
     setFiles(files.filter(file => file.id !== id));
   };
 
@@ -133,6 +154,17 @@ const FileUploadComponent = () => {
     }, 200);
   };
 
+  // New function to start uploading all selected files
+  const startUpload = () => {
+    const selectedFiles = files.filter(file => file.status === 'selected');
+
+    if (selectedFiles.length > 0) {
+      selectedFiles.forEach(fileObj => {
+        simulateFileUpload(fileObj.id);
+      });
+    }
+  };
+
   // File status icon component
   const FileStatusIcon = ({ status }) => {
     switch (status) {
@@ -142,9 +174,22 @@ const FileUploadComponent = () => {
         return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'error':
         return <AlertCircle className="h-4 w-4 text-red-500" />;
+      case 'selected':
+        return null;
       default:
         return null;
     }
+  };
+
+  // Check if there are any selected files that can be uploaded
+  const hasFilesToUpload = files.some(file => file.status === 'selected');
+
+  // Check if there are any files currently uploading
+  const hasUploadingFiles = files.some(file => file.status === 'uploading');
+
+  // Check if file is an image
+  const isImageFile = (file) => {
+    return file.type.startsWith('image/');
   };
 
   return (
@@ -187,52 +232,101 @@ const FileUploadComponent = () => {
         </Button>
       </div>
 
-      {/* File list */}
+      {/* File list with fixed height and scrolling */}
       {files.length > 0 && (
-        <div className="mt-6 space-y-4">
-          <h4 className="font-medium">Files ({files.length})</h4>
+        <div className="mt-6">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-medium">Files ({files.length})</h4>
+
+            {hasFilesToUpload && (
+              <Button
+                onClick={startUpload}
+                disabled={hasUploadingFiles}
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                {hasUploadingFiles ? 'Uploading...' : 'Start Upload'}
+              </Button>
+            )}
+          </div>
           
-          {files.map((fileObj) => (
-            <Card key={fileObj.id} className="overflow-hidden">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <FileStatusIcon status={fileObj.status} />
-                    <span className="text-sm font-medium truncate max-w-xs">
-                      {fileObj.file.name}
-                    </span>
-                    <span className="text-xs text-gray-500">
-                      ({(fileObj.file.size / 1024).toFixed(1)} KB)
-                    </span>
+          {/* Scrollable container with fixed height */}
+          <div className="max-h-100 overflow-y-auto pr-1 space-y-3 rounded-md border border-gray-200">
+            {files.map((fileObj) => (
+              <Card key={fileObj.id} className="overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <FileStatusIcon status={fileObj.status} />
+                      <span className="text-sm font-medium truncate max-w-xs">
+                        {fileObj.file.name}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        ({(fileObj.file.size / 1024).toFixed(1)} KB)
+                      </span>
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6"
+                      onClick={() => removeFile(fileObj.id)}
+                      disabled={fileObj.status === 'uploading'}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
                   </div>
-                  
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={() => removeFile(fileObj.id)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                <Progress 
-                  value={fileObj.progress} 
-                  className={`h-1 ${
-                    fileObj.status === 'error' 
-                      ? 'bg-red-100' 
-                      : fileObj.status === 'success' 
-                        ? 'bg-green-100' 
-                        : 'bg-blue-100'
-                  }`}
-                />
-                
-                {fileObj.error && (
-                  <p className="text-xs text-red-500 mt-1">{fileObj.error}</p>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+
+                  {/* Show image preview for image files */}
+                  {fileObj.previewUrl && (
+                    <div className="mt-2 mb-2 flex items-center">
+                      <div className="relative w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                        <img
+                          src={fileObj.previewUrl}
+                          alt={fileObj.file.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <span className="ml-2 text-sm text-gray-500">
+                        Image preview
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Show file type icon for non-image files */}
+                  {!fileObj.previewUrl && (
+                    <div className="mt-2 mb-2 flex items-center">
+                      <div className="p-2 bg-gray-100 rounded-md">
+                        <ImageIcon className="h-5 w-5 text-gray-500" />
+                      </div>
+                      <span className="ml-2 text-sm text-gray-500">
+                        {fileObj.file.type || 'Unknown file type'}
+                      </span>
+                    </div>
+                  )}
+
+                  {fileObj.status !== 'selected' && (
+                    <Progress
+                      value={fileObj.progress}
+                      className={`h-1 ${fileObj.status === 'error'
+                        ? 'bg-red-100'
+                        : fileObj.status === 'success'
+                          ? 'bg-green-100'
+                          : 'bg-blue-100'
+                        }`}
+                    />
+                  )}
+
+                  {fileObj.error && (
+                    <p className="text-xs text-red-500 mt-1">{fileObj.error}</p>
+                  )}
+
+                  {fileObj.status === 'selected' && (
+                    <p className="text-xs text-gray-500 mt-1">Ready to upload</p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       )}
     </div>
