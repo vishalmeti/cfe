@@ -59,91 +59,91 @@ export default function ChatPage() {
         timestamp: new Date(Date.now() - 3500000).toISOString(),
       },
       {
-        id: 1,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 1,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 1,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 1,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 1,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 1,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
         id: 3,
+        sender: "current-user-id",
+        text: "Hi there! How are you doing?",
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
+      {
+        id: 4,
+        sender: utu_id,
+        text: "I'm doing great! Just finished the project we were working on.",
+        timestamp: new Date(Date.now() - 3500000).toISOString(),
+      },
+      {
+        id: 5,
+        sender: "current-user-id",
+        text: "Hi there! How are you doing?",
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
+      {
+        id: 6,
+        sender: utu_id,
+        text: "I'm doing great! Just finished the project we were working on.",
+        timestamp: new Date(Date.now() - 3500000).toISOString(),
+      },
+      {
+        id: 34,
+        sender: "current-user-id",
+        text: "Hi there! How are you doing?",
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
+      {
+        id: 22342,
+        sender: utu_id,
+        text: "I'm doing great! Just finished the project we were working on.",
+        timestamp: new Date(Date.now() - 3500000).toISOString(),
+      },
+      {
+        id: 12432,
+        sender: "current-user-id",
+        text: "Hi there! How are you doing?",
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
+      {
+        id: 2343242,
+        sender: utu_id,
+        text: "I'm doing great! Just finished the project we were working on.",
+        timestamp: new Date(Date.now() - 3500000).toISOString(),
+      },
+      {
+        id: 1887987,
+        sender: "current-user-id",
+        text: "Hi there! How are you doing?",
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
+      {
+        id: 279765,
+        sender: utu_id,
+        text: "I'm doing great! Just finished the project we were working on.",
+        timestamp: new Date(Date.now() - 3500000).toISOString(),
+      },
+      {
+        id: 123324,
+        sender: "current-user-id",
+        text: "Hi there! How are you doing?",
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
+      {
+        id: 2232,
+        sender: utu_id,
+        text: "I'm doing great! Just finished the project we were working on.",
+        timestamp: new Date(Date.now() - 3500000).toISOString(),
+      },
+      {
+        id: 3333,
         sender: "current-user-id",
         text: "That's awesome! Can you share the details?",
         timestamp: new Date(Date.now() - 3400000).toISOString(),
       },
       {
-        id: 3,
+        id: 346345,
         sender: "current-user-id",
         text: "That's awesome! Can you share the details?",
         timestamp: new Date(Date.now() - 340000).toISOString(),
       },
       {
-        id: 4,
+        id: 42344234,
         sender: utu_id,
         text: "Sure, I'll send you the documentation in a bit.",
         timestamp: new Date(Date.now() - 3300000).toISOString(),
@@ -180,6 +180,7 @@ export default function ChatPage() {
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
       }
     }
+    console.log("Messages updated", messages);
   }, [messages]);
   
     // Search functionality
@@ -243,7 +244,7 @@ export default function ChatPage() {
     };
 
     const handleReply = (message, index) => {
-        setReplyTo({ message, index });
+      setReplyTo({ message, messageId: message.id, index });
         // Focus on input field
         document.getElementById('message-input').focus();
     };
@@ -257,12 +258,12 @@ export default function ChatPage() {
       sender: currentUser.id,
       text: inputMessage,
       timestamp: new Date().toISOString(),
-        replyTo: replyTo ? replyTo.index : null,
+      replyToId: replyTo ? replyTo.message.id : null,
     };
     
     setMessages([...messages, newMessage]);
     setInputMessage("");
-      setReplyTo(null);
+    setReplyTo(null);
     
     // In a real app, you'd send to API:
     // fetch('/api/messages', {
@@ -271,8 +272,8 @@ export default function ChatPage() {
     //   body: JSON.stringify({
     //     sender: currentUser.id,
     //     recipient: utu_id,
-      //     text: inputMessage,
-      //     replyToMessageId: replyTo ? replyTo.message.id : null
+    //     text: inputMessage,
+    //     replyToMessageId: replyTo ? replyTo.message.id : null
     //   })
     // });
   };
@@ -284,13 +285,17 @@ export default function ChatPage() {
     });
   };
 
-    const getReplyContent = (index) => {
-        if (index === null || index === undefined || !messages[index]) return null;
-        return messages[index];
+  const getReplyContent = (messageId) => {
+    if (!messageId) return null;
+    const replyMessage = messages.find(msg => msg.id === messageId);
+    return replyMessage || null;
     };
 
-    const scrollToMessage = (index) => {
-        const messageElement = document.getElementById(`message-${index}`);
+  const scrollToMessage = (messageId) => {
+    const messageIndex = messages.findIndex(msg => msg.id === messageId);
+    if (messageIndex === -1) return;
+
+    const messageElement = document.getElementById(`message-${messageIndex}`);
 
         if (messageElement && scrollAreaRef.current) {
             const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -407,7 +412,7 @@ export default function ChatPage() {
         <div className="flex flex-col gap-3 pb-4">
                   {messages.map((message, index) => {
             const isOwnMessage = message.sender === currentUser.id;
-                      const replyMessage = message.replyTo !== null ? getReplyContent(message.replyTo) : null;
+                    const replyMessage = message.replyToId ? getReplyContent(message.replyToId) : null;
             
             return (
               <div 
@@ -433,7 +438,7 @@ export default function ChatPage() {
                             <div
                                 className={`px-4 py-2 rounded-t-lg ${isOwnMessage ? 'bg-primary/20 ml-auto' : 'bg-muted/60'} 
                       text-xs mb-1 cursor-pointer flex items-center`}
-                                onClick={() => scrollToMessage(message.replyTo)}
+                      onClick={() => scrollToMessage(message.replyToId)}
                             >
                                 <Reply className="h-3 w-3 mr-1" />
                                 <div className="truncate">
