@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 
 import UserService from "@/services/userService"
+import { forEach } from "lodash"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
@@ -98,7 +99,8 @@ let data = {
       title: "Chat's",
       url: "#",
       icon: BookOpen,
-      items: [
+      items:
+        [
         {
           title: "Kevin",
           url: "/chat/1",
@@ -168,6 +170,7 @@ export function AppSidebar({
   ...props
 }) {
   const [user, setUser] = useState({})
+  const [navMainItems, setNavMainItems] = useState(data.navMain)
 
   useEffect(() => {
     UserService.getCurrentUser().then((res) => {
@@ -179,6 +182,32 @@ export function AppSidebar({
         avatar: me.profile_image_url
       })
       localStorage.setItem("user", JSON.stringify(me))
+
+      UserService.getWorkspaceUsers(me.workspace[0]).then((res) => {
+        let data = []
+        forEach(res, (workspaceUser) => {
+          console.log("Workspace user:", workspaceUser)
+          console.log("Current user:", me)
+          if (workspaceUser.user !== me.id)
+            data.push({
+              title: workspaceUser.username,
+              url: "/chat/" + workspaceUser.user,
+            })
+        })
+
+        // Update the Chat's items in navMainItems with API data
+        setNavMainItems(prevNavMain => {
+          return prevNavMain.map(item => {
+            if (item.title === "Chat's") {
+              return { ...item, items: data };
+            }
+            return item;
+          });
+        });
+      }).catch((error) => {
+        console.error("Failed to fetch workspace users:", error)
+      }
+      )
     }).catch((error) => {
       console.error("Failed to fetch user data:", error)
     })
@@ -190,7 +219,7 @@ export function AppSidebar({
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMainItems} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>

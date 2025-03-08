@@ -23,6 +23,9 @@ class UserService {
   static getRecipientConversation(recipient_id) {
     return ApiService.get(`api/v1/chat/conversations/recipient/${recipient_id}`);
   }
+  static getWorkspaceUsers(workspace_id) {
+    return ApiService.get(`/api/v1/workspaces/${workspace_id}/users/`);
+  }
 }
 
 export default UserService;
