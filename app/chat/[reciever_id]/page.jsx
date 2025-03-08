@@ -1,5 +1,9 @@
 "use client";
 
+import { fetchMessages } from "@/store/chatStore/chatSlice";
+import { useDispatch, useSelector } from "react-redux";
+import get from "lodash/get";
+
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -15,9 +19,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Card } from "@/components/ui/card";
+import UserService from "@/services/userService";
+import { set } from "lodash";
 
 export default function ChatPage() {
-  const { utu_id } = useParams();
+  const { reciever_id } = useParams();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [chatUser, setChatUser] = useState(null);
@@ -28,149 +34,68 @@ export default function ChatPage() {
     const [searchResults, setSearchResults] = useState([]);
     const [currentSearchIndex, setCurrentSearchIndex] = useState(0);
     const [replyTo, setReplyTo] = useState(null);
-  
+  const [conversation, setconversation] = useState({})
+
+
+  // redux store
+  const dispatch = useDispatch();
+  const { messages_by_id, messages_by_convId, status, error } = useSelector((state) => state.chat);
+  const chatMessages = useSelector((state) => {
+    const messageIds = state.chat.messages_by_convId[conversation.id]
+    console.log("ids", messageIds);
+
+    return messageIds?.map(id => state.chat.messages_by_id[id])
+  });
+
+  // Fix async effect - using proper async pattern
+  useEffect(() => {
+    const fetchConversation = async () => {
+      try {
+        const conversation = await UserService.getRecipientConversation(reciever_id);
+        setconversation(conversation);
+      } catch (error) {
+        console.error("Error fetching conversation:", error);
+      }
+    };
+    
+    fetchConversation();
+  }, [reciever_id]);
+
   // Fetch chat history and user data
   useEffect(() => {
-    // Mock data - replace with actual API calls
+    if (conversation?.id) {
+      dispatch(fetchMessages(reciever_id));
+    }
+    
     const mockCurrentUser = {
-      id: "current-user-id",
+      id:get(JSON.parse(localStorage.getItem("user")),"id",null),
       name: "You",
       avatar: "/avatars/user.jpg"
     };
     
     const mockChatUser = {
-      id: utu_id,
+      id: reciever_id,
       name: "John Doe",
       avatar: "/avatars/john.jpg",
       status: "online"
     };
     
-    const mockMessages = [
-      {
-        id: 1,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 3,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 4,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 5,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 6,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 34,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 22342,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 12432,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2343242,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 1887987,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 279765,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 123324,
-        sender: "current-user-id",
-        text: "Hi there! How are you doing?",
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-      },
-      {
-        id: 2232,
-        sender: utu_id,
-        text: "I'm doing great! Just finished the project we were working on.",
-        timestamp: new Date(Date.now() - 3500000).toISOString(),
-      },
-      {
-        id: 3333,
-        sender: "current-user-id",
-        text: "That's awesome! Can you share the details?",
-        timestamp: new Date(Date.now() - 3400000).toISOString(),
-      },
-      {
-        id: 346345,
-        sender: "current-user-id",
-        text: "That's awesome! Can you share the details?",
-        timestamp: new Date(Date.now() - 340000).toISOString(),
-      },
-      {
-        id: 42344234,
-        sender: utu_id,
-        text: "Sure, I'll send you the documentation in a bit.",
-        timestamp: new Date(Date.now() - 3300000).toISOString(),
-      },
-    ];
-    
     setCurrentUser(mockCurrentUser);
     setChatUser(mockChatUser);
-    setMessages(mockMessages);
-    
-    // In a real app, you'd fetch data like this:
-    // const fetchChatData = async () => {
-    //   try {
-    //     const [userResponse, messagesResponse] = await Promise.all([
-    //       fetch(`/api/users/${utu_id}`),
-    //       fetch(`/api/chats/${currentUserId}/${utu_id}/messages`)
-    //     ]);
-    //     const userData = await userResponse.json();
-    //     const messagesData = await messagesResponse.json();
-    //     setChatUser(userData);
-    //     setMessages(messagesData);
-    //   } catch (error) {
-    //     console.error("Failed to fetch chat data:", error);
-    //   }
-    // };
-    // fetchChatData();
-  }, [utu_id]);
+  }, [reciever_id, conversation?.id, dispatch]);
+
+  // Update messages when chatMessages changes - add null check and prevent loop
+  useEffect(() => {
+    if (chatMessages && Array.isArray(chatMessages) && chatMessages.length > 0) {
+      // Only update if the messages are different to prevent update loops
+      const currentIds = messages.map(m => m.id).join(',');
+      const newIds = chatMessages.map(m => m.id).join(',');
+      
+      if (currentIds !== newIds) {
+        setMessages(chatMessages);
+      }
+    }
+  }, [chatMessages]);
   
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -271,9 +196,9 @@ export default function ChatPage() {
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify({
     //     sender: currentUser.id,
-    //     recipient: utu_id,
-    //     text: inputMessage,
-    //     replyToMessageId: replyTo ? replyTo.message.id : null
+    //     recipient: reciever_id,
+      //     text: inputMessage,
+      //     replyToMessageId: replyTo ? replyTo.message.id : null
     //   })
     // });
   };
