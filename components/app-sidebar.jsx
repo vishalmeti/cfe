@@ -105,15 +105,19 @@ let data = {
         },
         {
           title: "Jenny",
-          url: "#",
+          url: "/chat/2",
         },
         {
           title: "Tom",
-          url: "#",
+          url: "/chat/3",
+        },
+        {
+          title: "John",
+          url: "/chat/4",
         },
         {
           title: "Sara",
-          url: "#",
+          url: "/chat/5",
         },
       ],
     },

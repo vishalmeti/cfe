@@ -51,7 +51,7 @@ const chatSlice = createSlice({
         let resp = action.payload;
 
         forEach(resp, (msg) => {
-          state.messages_by_id[msg.id] = {...msg, text: msg.content, timestamp: new Date(msg.timestamp).toLocaleString()};
+          state.messages_by_id[msg.id] = {...msg, text: msg.content, timestamp: new Date(msg.timestamp).toLocaleString(), replyToId: msg.reply_to};
           state.messages_by_convId[msg.conversation] = [...(state.messages_by_convId[msg.conversation] || []), msg.id];
         });
       })
