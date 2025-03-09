@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { useState, useEffect } from "react"
+import { useParams } from "next/navigation"
 
 // This is sample data.
 let data = {
@@ -187,6 +188,7 @@ export function AppSidebar({
         let data = []
         forEach(res, (workspaceUser) => {
           console.log("Workspace user:", workspaceUser)
+          localStorage.setItem("workspaceUsers", JSON.stringify(res)) // to show the list of users in left pane of the layout
           console.log("Current user:", me)
           if (workspaceUser.user !== me.id)
             data.push({

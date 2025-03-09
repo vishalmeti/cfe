@@ -41,7 +41,6 @@ export default function ChatPage() {
   const { messages_by_id, messages_by_convId, status, error } = useSelector((state) => state.chat);
   const chatMessages = useSelector((state) => {
     const messageIds = state.chat.messages_by_convId[conversation.id]
-    console.log("ids", messageIds);
 
     return messageIds?.map(id => state.chat.messages_by_id[id])
   });
@@ -52,6 +51,7 @@ export default function ChatPage() {
       try {
         const conversation = await UserService.getRecipientConversation(reciever_id);
         setconversation(conversation);
+        localStorage.setItem("conversation", JSON.stringify(conversation));
       } catch (error) {
         console.error("Error fetching conversation:", error);
       }
@@ -68,13 +68,20 @@ export default function ChatPage() {
     
     const mockCurrentUser = {
       id:get(JSON.parse(localStorage.getItem("user")),"id",null),
-      name: "You",
+      name: get(JSON.parse(localStorage.getItem("user")), "username", "You"),
       avatar: "/avatars/user.jpg"
     };
-    
+
+    const workspaceUsers = JSON.parse(localStorage.getItem("conversation"));
+
+    const conversationObjFromLocalStorage = JSON.parse(localStorage.getItem("conversation"));
+    const user1_username = conversationObjFromLocalStorage.user1_username;
+    const user2_username = conversationObjFromLocalStorage.user2_username;
+
+    const reciever_username = user1_username === mockCurrentUser.name ? user2_username : user1_username;
     const mockChatUser = {
       id: reciever_id,
-      name: "John Doe",
+      name: reciever_username, // Get the user's name from the workspaceUsers array",
       avatar: "/avatars/john.jpg",
       status: "online"
     };
