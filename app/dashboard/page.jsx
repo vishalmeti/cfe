@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
     Card,
@@ -31,10 +31,12 @@ import {
     // ClipboardList,
     // PieChart
 } from "lucide-react"
+import { forEach } from 'lodash'
 
 const DashboardPage = () => {
     const router = useRouter()
     const [isAdmin, setIsAdmin] = useState(false)
+    const [neighborData, setneighborData] = useState([])
 
     // Mock data
     const buildingData = {
@@ -73,12 +75,18 @@ const DashboardPage = () => {
         ]
     }
 
-    const neighborData = [
-        { id: 1, name: "Jane Smith", unit: "301", avatar: "/avatars/jane.png" },
-        { id: 2, name: "Michael Johnson", unit: "302", avatar: "/avatars/michael.png" },
-        { id: 3, name: "Sarah Williams", unit: "303", avatar: "/avatars/sarah.png" },
-        { id: 4, name: "Robert Brown", unit: "304", avatar: "/avatars/robert.png" }
-    ]
+    // const neighborData = [
+    //     { id: 1, name: "Jane Smith", unit: "301", avatar: "/avatars/jane.png" },
+    //     { id: 2, name: "Michael Johnson", unit: "302", avatar: "/avatars/michael.png" },
+    //     { id: 3, name: "Sarah Williams", unit: "303", avatar: "/avatars/sarah.png" },
+    //     { id: 4, name: "Robert Brown", unit: "304", avatar: "/avatars/robert.png" }
+    // ]
+    useEffect(() => {
+        // Fetch neighbor data
+        const neighborData = JSON.parse(localStorage.getItem("workspaceUsers"))
+        forEach(neighborData, (neighbor) => { neighbor.name = neighbor.username, neighbor.unit = neighbor.workspace_name })
+        setneighborData(neighborData)
+    }, [])
 
     const announcementData = [
         { id: 1, title: "Annual Building Maintenance", date: "2025-03-15", priority: "high" },
@@ -154,11 +162,6 @@ const DashboardPage = () => {
         router.push("/complaints")
     }
 
-    const routeToNegighbors = () => {
-        // Navigate to neighbors page
-        alert("Navigating to neighbors page")
-        router.push("/chat/1")
-    }
 
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 md:p-6">
@@ -599,7 +602,7 @@ const DashboardPage = () => {
                         </CardHeader>
                         <CardContent>
                             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                                {neighborData.concat(neighborData).map((neighbor, index) => (
+                                {neighborData.map((neighbor, index) => (
                                     <div key={`${neighbor.id}-${index}`} className="flex flex-col items-center space-y-3 border rounded-lg p-4">
                                         <Avatar className="h-20 w-20">
                                             <AvatarImage src={neighbor.avatar} />
@@ -609,11 +612,11 @@ const DashboardPage = () => {
                                             <h3 className="font-medium">{neighbor.name}</h3>
                                             <p className="text-sm text-muted-foreground">Unit {neighbor.unit}</p>
                                         </div>
-                                        {isAdmin && (
-                                            <Button variant="outline" size="sm" className="w-full">
-                                                Contact
+
+                                        <Button variant="secondary" size="sm" className="w-full cursor-pointer" onClick={() => router.push('chat/' + neighbor.user)}>
+                                            Chat
                                             </Button>
-                                        )}
+
                                     </div>
                                 ))}
                             </div>
