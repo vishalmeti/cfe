@@ -81,6 +81,7 @@ let data = {
       title: "Channels",
       url: "#",
       icon: Bot,
+      isActive: true,
       items: [
         {
           title: "#General",
@@ -100,34 +101,14 @@ let data = {
       title: "Chat's",
       url: "#",
       icon: BookOpen,
-      items:
-        [
-        {
-          title: "Kevin",
-          url: "/chat/1",
-        },
-        {
-          title: "Jenny",
-          url: "/chat/2",
-        },
-        {
-          title: "Tom",
-          url: "/chat/3",
-        },
-        {
-          title: "John",
-          url: "/chat/4",
-        },
-        {
-          title: "Sara",
-          url: "/chat/5",
-        },
-      ],
+      isActive: true,
+      items: []
     },
     {
       title: "Settings",
       url: "#",
       icon: Settings2,
+      isActive: true,
       items: [
         {
           title: "General",
@@ -181,6 +162,19 @@ export function AppSidebar({
     }
   };
 
+  // Update the active state whenever props.active changes
+  useEffect(() => {
+    setNavMainItems(prevNavMain => {
+      return prevNavMain.map(item => {
+        // Set isActive based on current props.active value
+        return {
+          ...item,
+          isActive: item.title.toLowerCase() === props.active?.toLowerCase()
+        };
+      });
+    });
+  }, [props.active]);
+
   useEffect(() => {
     UserService.getCurrentUser().then((res) => {
       const me = res
@@ -209,19 +203,24 @@ export function AppSidebar({
         setNavMainItems(prevNavMain => {
           return prevNavMain.map(item => {
             if (item.title === "Chat's") {
-              return { ...item, items: data };
+              // Apply active state based on current props
+              return {
+                ...item,
+                items: data,
+                isActive: props.active === "chat"
+              };
             }
+            // Maintain existing active state for other items
             return item;
           });
         });
       }).catch((error) => {
         console.error("Failed to fetch workspace users:", error)
-      }
-      )
+      })
     }).catch((error) => {
       console.error("Failed to fetch user data:", error)
     })
-  }, [])
+  }, [props.active]) // Add props.active as dependency so it updates when changed
 
   return (
     (<Sidebar collapsible="icon" {...props}>
