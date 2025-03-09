@@ -19,10 +19,17 @@ import {
 } from "@/components/ui/sidebar"
 
 export function NavMain({
-  items
+  items,
+  onNavigate
 }) {
+  // Handle click with preventDefault to avoid page reload
+  const handleClick = (e, url) => {
+    e.preventDefault();
+    onNavigate(url);
+  };
+
   return (
-    (<SidebarGroup>
+    <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
@@ -33,7 +40,7 @@ export function NavMain({
             className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
+                <SidebarMenuButton tooltip={item.title} onClick={() => item.url !== "#" && onNavigate(item.url)}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                   <ChevronRight
@@ -44,10 +51,11 @@ export function NavMain({
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span className="text-primary/80 dark:text-primary/80" >{subItem.title}</span>
-                        </a>
+                      <SidebarMenuSubButton
+                        onClick={(e) => handleClick(e, subItem.url)}
+                        className="cursor-pointer"
+                      >
+                        <span className="text-primary/80 dark:text-primary/80">{subItem.title}</span>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}
@@ -57,6 +65,6 @@ export function NavMain({
           </Collapsible>
         ))}
       </SidebarMenu>
-    </SidebarGroup>)
+    </SidebarGroup>
   );
 }

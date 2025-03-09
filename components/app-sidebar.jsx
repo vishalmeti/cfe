@@ -13,6 +13,7 @@ import {
   Settings2,
   SquareTerminal,
 } from "lucide-react"
+import { useRouter, useParams } from "next/navigation"
 
 import UserService from "@/services/userService"
 import { forEach } from "lodash"
@@ -30,7 +31,6 @@ import {
 } from "@/components/ui/sidebar"
 
 import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
 
 // This is sample data.
 let data = {
@@ -170,8 +170,16 @@ let data = {
 export function AppSidebar({
   ...props
 }) {
+  const router = useRouter();
   const [user, setUser] = useState({})
   const [navMainItems, setNavMainItems] = useState(data.navMain)
+
+  // Handle navigation with the router instead of direct links
+  const handleNavigation = (url) => {
+    if (url && url !== "#") {
+      router.push(url);
+    }
+  };
 
   useEffect(() => {
     UserService.getCurrentUser().then((res) => {
@@ -221,7 +229,7 @@ export function AppSidebar({
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMainItems} />
+        <NavMain items={navMainItems} onNavigate={handleNavigation} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
