@@ -21,6 +21,14 @@ export const fetchMessages = createAsyncThunk(
   }
 );
 
+export const sendMessage = createAsyncThunk(
+  "chat/sendMessage",
+  async (messageData) => {
+    const response = await ChatService.sendMessage(messageData);
+    console.log("Response:", response)
+    return response;
+  }
+);
 
 // --- Slice ---
 
@@ -59,7 +67,30 @@ const chatSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload; // Store the error message
       })
-
+      .addCase(sendMessage.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(sendMessage.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        // Format the message data consistently with fetchMessages
+        const messageData = {
+          ...action.payload,
+          text: action.payload.content,
+          timestamp: new Date(action.payload.timestamp).toLocaleString(),
+          replyToId: action.payload.reply_to
+        };
+        // Add new message to both lookup tables
+        state.messages_by_id[action.payload.id] = messageData;
+        const convId = action.payload.conversation;
+        if (!state.messages_by_convId[convId]) {
+          state.messages_by_convId[convId] = [];
+        }
+        state.messages_by_convId[convId].push(action.payload.id);
+      })
+      .addCase(sendMessage.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 

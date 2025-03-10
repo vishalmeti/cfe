@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchMessages } from "@/store/chatStore/chatSlice";
+import { fetchMessages, sendMessage } from "@/store/chatStore/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import get from "lodash/get";
 
@@ -242,33 +242,23 @@ export default function ChatPage() {
     document.getElementById('message-input').focus();
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
     
     const newMessage = {
-      id: Date.now(),
-      sender: currentUser.id,
-      text: inputMessage,
-      timestamp: new Date().toISOString(),
-      replyToId: replyTo ? replyTo.message.id : null,
+      content: inputMessage,
+      conversation: conversation.id,
+      reply_to: replyTo ? replyTo.message.id : null
     };
-    
-    setMessages([...messages, newMessage]);
-    setInputMessage("");
-    setReplyTo(null);
-    
-    // In a real app, you'd send to API:
-    // fetch('/api/messages', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     sender: currentUser.id,
-    //     recipient: reciever_id,
-    //     text: inputMessage,
-    //     replyToMessageId: replyTo ? replyTo.message.id : null
-    //   })
-    // });
+
+    try {
+      await dispatch(sendMessage(newMessage)).unwrap();
+      setInputMessage("");
+      setReplyTo(null);
+    } catch (err) {
+      console.error('Failed to send message:', err);
+    }
   };
   
   const formatTime = (timestamp) => {
