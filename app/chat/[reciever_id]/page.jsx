@@ -42,7 +42,7 @@ export default function ChatPage() {
   const chatMessages = useSelector((state) => {
     const messageIds = state.chat.messages_by_convId[conversation.id]
 
-    return messageIds?.map(id => state.chat.messages_by_id[id])
+    return messageIds ??.map(id => state.chat.messages_by_id[id])
   });
 
   // Fix async effect - using proper async pattern
@@ -94,8 +94,8 @@ export default function ChatPage() {
   useEffect(() => {
     if (chatMessages && Array.isArray(chatMessages) && chatMessages.length > 0) {
       // Only update if the messages are different to prevent update loops
-      const currentIds = messages.map(m => m.id).join(',');
-      const newIds = chatMessages.map(m => m.id).join(',');
+      const currentIds = messages?.map(m => m.id).join(',');
+      const newIds = chatMessages?.map(m => m.id).join(',');
       
       if (currentIds !== newIds) {
         setMessages(chatMessages);
@@ -163,7 +163,7 @@ export default function ChatPage() {
     const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
     return (
       <>
-        {parts.map((part, i) =>
+        {parts?.map((part, i) =>
           part.toLowerCase() === searchQuery.toLowerCase() ?
             <span key={i} className="search-match">{part}</span> : part
         )}
@@ -421,7 +421,7 @@ export default function ChatPage() {
       <ScrollArea ref={scrollAreaRef} className="flex-1 p-4">
         <div className="flex flex-col gap-3 pb-4">
           {/* When searching, show filtered messages; otherwise show all messages */}
-          {(searchQuery.trim() ? getFilteredMessages() : messages).map((message, index) => {
+          {(searchQuery.trim() ? getFilteredMessages() : messages)?.map((message, index) => {
             const isOwnMessage = message.sender === currentUser.id;
             const replyMessage = message.replyToId ? getReplyContent(message.replyToId) : null;
             

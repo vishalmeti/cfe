@@ -105,7 +105,7 @@ export default function AnnouncementsPage() {
         <div>
           <ScrollArea className="h-[80vh] w-[80vw] rounded-md border ">
             <div className="p-4 space-y-4">
-              {announcements.map((announcement) => (
+              {announcements?.map((announcement) => (
                 <Card key={announcement.id} className="relative hover:bg-accent transition-colors">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">

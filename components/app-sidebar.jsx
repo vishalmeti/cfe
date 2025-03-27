@@ -165,7 +165,7 @@ export function AppSidebar({
   // Update the active state whenever props.active changes
   useEffect(() => {
     setNavMainItems(prevNavMain => {
-      return prevNavMain.map(item => {
+      return prevNavMain?.map(item => {
         // Set isActive based on current props.active value
         return {
           ...item,
@@ -201,7 +201,7 @@ export function AppSidebar({
 
         // Update the Chat's items in navMainItems with API data
         setNavMainItems(prevNavMain => {
-          return prevNavMain.map(item => {
+          return prevNavMain?.map(item => {
             if (item.title === "Chat's") {
               // Apply active state based on current props
               return {

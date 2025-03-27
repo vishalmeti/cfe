@@ -13,7 +13,7 @@ export function ComplaintListView({ complaints }) {
       <CardContent>
         <div className="space-y-3">
           {complaints.length ? (
-            complaints.map(complaint => (
+            complaints?.map(complaint => (
               <ComplaintCard key={complaint.id} complaint={complaint} />
             ))
           ) : (

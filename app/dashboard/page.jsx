@@ -150,7 +150,7 @@ const DashboardPage = () => {
     }
 
     // Calculate max value for scaling
-    const maxComplaintCount = Math.max(...complaintData.trend.map(item => item.count));
+    const maxComplaintCount = Math.max(...complaintData.trend?.map(item => item.count));
 
     // Function to get height percentage based on value
     const getHeightPercentage = (value) => {
@@ -289,7 +289,7 @@ const DashboardPage = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
-                                    {complaintData.recent.map(complaint => (
+                                    {complaintData.recent?.map(complaint => (
                                         <div key={complaint.id} className="flex items-center justify-between">
                                             <div className="space-y-1">
                                                 <p className="text-sm font-medium">{complaint.title}</p>
@@ -320,7 +320,7 @@ const DashboardPage = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
-                                    {announcementData.map(announcement => (
+                                    {announcementData?.map(announcement => (
                                         <div key={announcement.id} className="flex items-center space-x-4">
                                             <div className="flex-1 space-y-1">
                                                 <p className="font-medium leading-none flex items-center">
@@ -357,7 +357,7 @@ const DashboardPage = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
-                                    {neighborData.map(neighbor => (
+                                    {neighborData?.map(neighbor => (
                                         <div key={neighbor.id} className=" cursor-pointer flex items-center space-x-4" >
                                             <Avatar>
                                                 <AvatarImage src={neighbor.avatar} />
@@ -432,7 +432,7 @@ const DashboardPage = () => {
                                             </div>
                                             <div className="pt-4">
                                                 <p className="text-sm font-medium mb-2">Payment History</p>
-                                                {billsData.history.map((bill, index) => (
+                                                    {billsData.history?.map((bill, index) => (
                                                     <div key={index} className="flex justify-between text-sm py-1">
                                                         <span>{bill.month} 2025</span>
                                                         <span className="font-medium">${bill.amount}</span>
@@ -528,7 +528,7 @@ const DashboardPage = () => {
                                     </CardHeader>
                                     <CardContent>
                                         <div className="space-y-3">
-                                            {complaintData.monthly.map((item, index) => (
+                                            {complaintData.monthly?.map((item, index) => (
                                                 <div key={index} className="space-y-1">
                                                     <div className="flex items-center justify-between text-sm">
                                                         <span>{item.category}</span>
@@ -556,7 +556,7 @@ const DashboardPage = () => {
                                     </CardHeader>
                                     <CardContent>
                                         <div className="h-[200px] flex items-end gap-[2px] pt-4">
-                                            {complaintData.trend.map((item, i) => (
+                                            {complaintData.trend?.map((item, i) => (
                                                 <div key={i} className="grow flex flex-col items-center">
                                                     <div
                                                         className="w-full bg-primary rounded-t-sm"
@@ -574,7 +574,7 @@ const DashboardPage = () => {
                             <div>
                                 <h3 className="text-lg font-medium mb-2">Recent Complaints</h3>
                                 <div className="space-y-4">
-                                    {complaintData.recent.map(complaint => (
+                                    {complaintData.recent?.map(complaint => (
                                         <div key={complaint.id} className="flex items-center justify-between border-b pb-3">
                                             <div className="space-y-1">
                                                 <p className="font-medium">{complaint.title}</p>
@@ -602,7 +602,7 @@ const DashboardPage = () => {
                         </CardHeader>
                         <CardContent>
                             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                                {neighborData.map((neighbor, index) => (
+                                {neighborData?.map((neighbor, index) => (
                                     <div key={`${neighbor.id}-${index}`} className="flex flex-col items-center space-y-3 border rounded-lg p-4">
                                         <Avatar className="h-20 w-20">
                                             <AvatarImage src={neighbor.avatar} />

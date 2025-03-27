@@ -37,7 +37,7 @@ const FileUploadComponent = () => {
   };
 
   const processFiles = (fileList) => {
-    const newFiles = Array.from(fileList).map(file => {
+    const newFiles = Array.from(fileList)?.map(file => {
       const fileData = {
         file,
         id: `${file.name}-${Date.now()}`,
@@ -99,7 +99,7 @@ const FileUploadComponent = () => {
   // Simulate file upload with progress
   const simulateFileUpload = (fileId) => {
     setFiles(prev => 
-      prev.map(file => 
+      prev?.map(file => 
         file.id === fileId 
           ? { ...file, status: 'uploading' } 
           : file
@@ -118,7 +118,7 @@ const FileUploadComponent = () => {
         const success = Math.random() > 0.1;
         
         setFiles(prev => 
-          prev.map(file => 
+          prev?.map(file => 
             file.id === fileId 
               ? { 
                   ...file, 
@@ -144,7 +144,7 @@ const FileUploadComponent = () => {
         }
       } else {
         setFiles(prev => 
-          prev.map(file => 
+          prev?.map(file => 
             file.id === fileId 
               ? { ...file, progress } 
               : file
@@ -251,7 +251,7 @@ const FileUploadComponent = () => {
           
           {/* Scrollable container with fixed height */}
           <div className="max-h-100 overflow-y-auto pr-1 space-y-3 rounded-md border border-gray-200">
-            {files.map((fileObj) => (
+            {files?.map((fileObj) => (
               <Card key={fileObj.id} className="overflow-hidden">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">

@@ -253,7 +253,7 @@ export default function ComplaintDetailPage({ params }) {
           <CardContent className="flex-1 overflow-hidden p-0">
             <ScrollArea className="h-full px-6">
               <div className="flex flex-col gap-4 py-4">
-                {complaint.messages.map(message => (
+                {complaint.messages?.map(message => (
                   <div 
                     key={message.id} 
                     className={`flex gap-3 ${
@@ -367,7 +367,7 @@ export default function ComplaintDetailPage({ params }) {
                 <div>
                   <h3 className="text-sm font-medium leading-none mb-2">Images</h3>
                   <div className="grid grid-cols-2 gap-2">
-                    {complaint.images.map((img, index) => (
+                    {complaint.images?.map((img, index) => (
                       <Dialog key={index}>
                         <DialogTrigger asChild>
                           <div className="relative h-24 overflow-hidden rounded-md cursor-pointer border hover:opacity-90">
@@ -405,7 +405,7 @@ export default function ComplaintDetailPage({ params }) {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {complaint.timeline.map((event, index) => (
+                {complaint.timeline?.map((event, index) => (
                   <div key={index} className="flex gap-3">
                     <div className="relative mt-1">
                       <div className="flex h-2 w-2 rounded-full bg-primary"></div>

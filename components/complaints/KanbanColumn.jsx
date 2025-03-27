@@ -18,7 +18,7 @@ export function KanbanColumn({ title, icon, complaints, emptyMessage }) {
       <CardContent className="p-3">
         <ScrollArea className="h-[calc(100vh-360px)]">
           {complaints.length ? (
-            complaints.map(complaint => (
+            complaints?.map(complaint => (
               <ComplaintCard key={complaint.id} complaint={complaint} />
             ))
           ) : (
