@@ -42,7 +42,7 @@ export default function ChatPage() {
   const chatMessages = useSelector((state) => {
     const messageIds = state.chat.messages_by_convId[conversation.id]
 
-    return messageIds ??.map(id => state.chat.messages_by_id[id])
+    return messageIds?.map(id => state.chat.messages_by_id[id])
   });
 
   // Fix async effect - using proper async pattern
