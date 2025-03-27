@@ -111,7 +111,7 @@ export default function Component() {
                       className="flex h-3 w-3 shrink-0 rounded-sm"
                       style={{
                         backgroundColor: config.color,
-                      }}?.map
+                      }}
                     />
                     {config?.label}
                   </div>
@@ -129,7 +129,7 @@ export default function Component() {
         >
           <PieChart>
             <ChartTooltip
-              curso?.mapalse}
+              cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
@@ -207,4 +207,3 @@ export default function Component() {
     </Card>
   )
 }
-?.map
