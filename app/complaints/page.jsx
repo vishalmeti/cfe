@@ -5,12 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ComplaintKanbanView } from '@/components/complaints/ComplaintKanbanView'
 import { ComplaintListView } from '@/components/complaints/ComplaintListView'
 import { ComplaintSearchFilters } from '@/components/complaints/ComplaintSearchFilters'
+import { NewComplaintModal } from '@/components/complaints/NewComplaintModal'
+import { PlusCircle, ImagePlus } from "lucide-react"
+
 import { Button } from "@/components/ui/button"
-import { PlusCircle } from "lucide-react"
 
 export default function ComplaintsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [modalOpen, setModalOpen] = useState(false)
 
   // Mock complaints data
   const mockComplaints = [
@@ -294,12 +297,13 @@ export default function ComplaintsPage() {
           setSearchTerm={setSearchTerm}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
+          onNewComplaint={() => setModalOpen(true)}
         />
 
-        {/* Responsive new complaint button for small screens */}
-        <Button className="sm:hidden">
-          <PlusCircle className="mr-2 h-4 w-4" /> New Complaint
-        </Button>
+        <NewComplaintModal
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+        />
 
         {/* Main content with tabs */}
         <TabsContent value="kanban" className="pt-4">

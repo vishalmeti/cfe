@@ -13,7 +13,8 @@ export function ComplaintSearchFilters({
   searchTerm, 
   setSearchTerm, 
   selectedCategory, 
-  setSelectedCategory 
+  setSelectedCategory,
+  onNewComplaint
 }) {
   return (
     <>
@@ -49,7 +50,7 @@ export function ComplaintSearchFilters({
           <Button variant="outline" size="icon">
             <Filter className="h-4 w-4" />
           </Button>
-          <Button className="hidden sm:flex">
+          <Button onClick={onNewComplaint}>
             <PlusCircle className="mr-2 h-4 w-4" /> New Complaint
           </Button>
         </div>

@@ -32,6 +32,14 @@ const desktopData = [
   { month: "march", desktop: 237, fill: "hsl(var(--primary) / 0.6)" },
   { month: "april", desktop: 173, fill: "hsl(var(--primary) / 0.45)" },
   { month: "may", desktop: 209, fill: "hsl(var(--primary) / 0.3)" },
+  { month: "june", desktop: 306, fill: "hsl(var(--primary) / 0.25)" },
+  { month: "july", desktop: 194, fill: "hsl(var(--primary) / 0.2)" },
+  { month: "august", desktop: 196, fill: "hsl(var(--primary) / 0.19)" },
+  { month: "september", desktop: 285, fill: "hsl(var(--primary) / 0.15)" },
+  { month: "october", desktop: 268, fill: "hsl(var(--primary) / 0.13)" },
+  { month: "november", desktop: 191, fill: "hsl(var(--primary) / 0.1)" },
+  { month: "december", desktop: 273, fill: "hsl(var(--primary) / 0.05)" },
+
 ]
 
 // Updated chart config to use monochromatic shades
@@ -64,6 +72,34 @@ const chartConfig = {
   may: {
     label: "May",
     color: "hsl(var(--primary) / 0.3)",
+  },
+  june: {
+    label: "June",
+    color: "hsl(var(--primary) / 0.25)",
+  },
+  july: {
+    label: "July",
+    color: "hsl(var(--primary) / 0.2)",
+  },
+  august: {
+    label: "August",
+    color: "hsl(var(--primary) / 0.19)",
+  },
+  september: {
+    label: "September",
+    color: "hsl(var(--primary) / 0.15)",
+  },
+  october: {
+    label: "October",
+    color: "hsl(var(--primary) / 0.13)",
+  },
+  november: {
+    label: "November",
+    color: "hsl(var(--primary) / 0.1)",
+  },
+  december: {
+    label: "December",
+    color: "hsl(var(--primary) / 0.1)",
   },
 }
 
