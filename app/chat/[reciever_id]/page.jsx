@@ -249,8 +249,13 @@ export default function ChatPage() {
     const newMessage = {
       content: inputMessage,
       conversation: conversation.id,
+      recipient: reciever_id,
       reply_to: replyTo ? replyTo.message.id : null
     };
+
+    if (conversation.id) {
+      delete newMessage.recipient;
+    }
 
     try {
       await dispatch(sendMessage(newMessage)).unwrap();
