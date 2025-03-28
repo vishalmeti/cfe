@@ -2,6 +2,7 @@
 
 A modern, real-time chat application built with Next.js and Redux, featuring a clean and intuitive user interface with advanced messaging capabilities.
 
+**Backend repo** 👉 https://github.com/vishalmeti/flatsphere-backend
 
 ## ✨ Features
 
